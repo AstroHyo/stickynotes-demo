@@ -54,7 +54,7 @@ class StickyNotesApp {
     const noteEdit = document.createElement("textarea");
     noteEdit.id = `note-textarea-${note.id}`;
     noteEdit.classList.add("absolute", "top-0", "left-0", "hidden", "w-full", "h-full", "p-4", "transition-transform", "transform", "bg-yellow-300", "shadow-xl", "resize-none", "outline-rose-700", "outline-offset-0", "note-edit", "note", "hover:scale-105");
-    noteEdit.innerText = note.text;
+    noteEdit.value = note.text;
     return noteEdit;
   }
 
