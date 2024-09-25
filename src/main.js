@@ -6,15 +6,11 @@ class StickyNotesApp {
   #notesWall;
   #notesWallElement;
   #inputNewNote;
-  // #dblcClickNote
-  // #editNote;
-  // #removeNote;
 
   constructor() {
     this.#notesWall = new NotesWall();
     this.#notesWallElement = document.getElementById("notes-wall");
     this.#inputNewNote = document.getElementById("new-note");
-    // this.#removeNote = document.getElementsByClassName("delete-btn");
 
     this.#inputNewNote.addEventListener(
       "keydown",
@@ -35,6 +31,11 @@ class StickyNotesApp {
       "blur", 
       this.#handleBlurToSaveNote.bind(this), 
       true
+    );
+
+    this.#notesWallElement.addEventListener(
+      "click",
+      this.#handleClickOnRemoveNoteButton.bind(this),
     );
 
     document.addEventListener("DOMContentLoaded", this.#renderNotes.bind(this));
@@ -59,8 +60,9 @@ class StickyNotesApp {
   }
 
   // Helper Function to create a remove button
-  #createNoteRemoveButton() {
+  #createNoteRemoveButton(note) {
     const noteRemoveButton = document.createElement("button");
+    noteRemoveButton.id = `note-delete-btn-${note.id}`;
     noteRemoveButton.classList.add("absolute", "w-5", "h-5", "leading-5", "text-center", "transition-opacity", "opacity-0", "cursor-pointer", "delete-btn", "top-1", "right-1", "hover:opacity-100");
     noteRemoveButton.innerText = "🗑";
     return noteRemoveButton;
@@ -71,7 +73,7 @@ class StickyNotesApp {
     const noteItem = document.createElement("div");
     noteItem.id = `note-item`;
     noteItem.classList.add("relative", "w-40", "h-40", "p-0", "m-2", "overflow-y-auto", "transition-transform", "transform", "bg-yellow-200", "shadow-lg", "note", "hover:scale-105");
-    const noteRemoveButton = this.#createNoteRemoveButton();
+    const noteRemoveButton = this.#createNoteRemoveButton(note);
     const noteText = this.#createNoteText(note);
     const noteEdit = this.#createNoteTextarea(note);
     noteItem.append(noteRemoveButton, noteText, noteEdit);
@@ -113,7 +115,6 @@ class StickyNotesApp {
   #handleDoubleClickOnNoteElement = (event) => {
     const noteItem = event.target.closest(".note");
     if (noteItem) {
-      // 모든 노트의 편집 모드를 종료
       document.querySelectorAll(".note-edit").forEach(noteEdit => {
         noteEdit.style.display = "none";
         noteEdit.previousElementSibling.style.display = "block";
@@ -122,7 +123,6 @@ class StickyNotesApp {
       const noteText = noteItem.querySelector(".note-text");
       const noteEdit = noteItem.querySelector(".note-edit");
 
-      // 현재 노트의 편집 모드 활성화
       noteText.style.display = "none";
       noteEdit.style.display = "block";
       noteEdit.focus();
@@ -163,13 +163,20 @@ class StickyNotesApp {
   }
   
   // Helper function to find the target todo element
-  // #findTargetNoteElement = (event) =>
-  //   event.target.id?.includes("note-textarea") ? event.target : null;
   #findTargetNoteElement = (element) => element.closest(".note");
 
   // Helper function to parse the note id from the note element
   #parseNoteId = (note) => (note ? Number(note.id.split("-").pop()) : -1);
 
+  // Event handler to remove the note
+  #handleClickOnRemoveNoteButton = (event) => {
+    if (event.target.id.startsWith("note-delete-btn-")) {
+      const noteElement = event.target.closest(".note");
+      const noteId = this.#parseNoteId(noteElement);
+      this.#notesWall.removeNote(noteId);
+      this.#renderNotes();
+    }
+  }
   
 }
 

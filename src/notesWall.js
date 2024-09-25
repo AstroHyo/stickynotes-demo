@@ -12,7 +12,7 @@ class NotesWall {
   }
 
   removeNote(id) {
-    this.#notes.splice(id);
+    this.#notes.splice(id, 1);
   }
 
   editNote(id, newText) {
