@@ -16,7 +16,10 @@ class NotesWall {
   }
 
   editNote(id, newText) {
-    this.#notes[id].text(newText);
+    const note = this.#notes.find(note => note.id === id);
+    if (note) {
+      note.text = newText;
+    }
   }
 }
 
