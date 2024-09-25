@@ -55,27 +55,14 @@ class StickyNotesApp {
     return noteItem;
   }
 
-
-
-
-
-
-
-
-
-
-
-  // // Function to render the notes
-  // #renderNotes() {
-  //   this.#notesWallElement.innerHTML = ""; // Clear the current list to avoid duplicates
-
-  //   const notesElements = this.#notesWall
-  //     .getNotes()
-  //     .map(this.#createTodoItem.bind(this));
-  //   this.#todoListElement.append(...todoElements);
-
-  //   this.#activeTodosCount.innerText = `${this.#todoList.getNumberOfActiveTodos()} item${this.#todoList.getNumberOfActiveTodos() === 1 ? "" : "s"} left`;
-  // }
+  // Function to render the notes
+  #renderNotes() {
+    this.#notesWallElement.innerHTML = "";
+    const notesElements = this.#notesWall
+      .getNotes()
+      .map(this.#createNoteItem.bind(this));
+    this.#notesWallElement.append(...notesElements);
+  }
   
 
 
