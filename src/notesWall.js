@@ -12,7 +12,11 @@ class NotesWall {
   }
 
   removeNote(id) {
-    this.#notes.splice(id, 1);
+    for(let i = 0; i < this.#notes.length; i++) {
+      if (this.#notes[i].id === id) {
+        this.#notes.splice(i, 1);
+      }
+    }
   }
 
   editNote(id, newText) {

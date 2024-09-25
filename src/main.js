@@ -71,8 +71,9 @@ class StickyNotesApp {
   // Helper Function to create a note item
   #createNoteItem(note) {
     const noteItem = document.createElement("div");
-    noteItem.id = `note-item`;
+    noteItem.id = `note-item-${note.id}`;
     noteItem.classList.add("relative", "w-40", "h-40", "p-0", "m-2", "overflow-y-auto", "transition-transform", "transform", "bg-yellow-200", "shadow-lg", "note", "hover:scale-105");
+    noteItem.style.overflow = "hidden"; 
     const noteRemoveButton = this.#createNoteRemoveButton(note);
     const noteText = this.#createNoteText(note);
     const noteEdit = this.#createNoteTextarea(note);
@@ -125,6 +126,7 @@ class StickyNotesApp {
 
       noteText.style.display = "none";
       noteEdit.style.display = "block";
+      noteEdit.classList.add("scale-105");
       noteEdit.focus();
     }
   }
@@ -172,15 +174,12 @@ class StickyNotesApp {
   #handleClickOnRemoveNoteButton = (event) => {
     if (event.target.id.startsWith("note-delete-btn-")) {
       const noteElement = event.target.closest(".note");
-      const noteId = this.#parseNoteId(noteElement);
-      this.#notesWall.removeNote(noteId);
+      const noteId = this.#findTargetNoteElement(event.target);
+      const noteIdNumber = this.#parseNoteId(noteId);
+      this.#notesWall.removeNote(noteIdNumber);
       this.#renderNotes();
     }
   }
-  
 }
-
-
-
 
 new StickyNotesApp();
