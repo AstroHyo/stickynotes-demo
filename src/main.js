@@ -23,14 +23,14 @@ class StickyNotesApp {
     );
 
     this.#notesWallElement.addEventListener(
-      "keydown", 
-      this.#handleKeyDownToSaveNote.bind(this)
+      "keydown",
+      this.#handleKeyDownToSaveNote.bind(this),
     );
 
     this.#notesWallElement.addEventListener(
-      "blur", 
-      this.#handleBlurToSaveNote.bind(this), 
-      true
+      "blur",
+      this.#handleBlurToSaveNote.bind(this),
+      true,
     );
 
     this.#notesWallElement.addEventListener(
@@ -54,7 +54,25 @@ class StickyNotesApp {
   #createNoteTextarea(note) {
     const noteEdit = document.createElement("textarea");
     noteEdit.id = `note-textarea-${note.id}`;
-    noteEdit.classList.add("absolute", "top-0", "left-0", "hidden", "w-full", "h-full", "p-4", "transition-transform", "transform", "bg-yellow-300", "shadow-xl", "resize-none", "outline-rose-700", "outline-offset-0", "note-edit", "note", "hover:scale-105");
+    noteEdit.classList.add(
+      "absolute",
+      "top-0",
+      "left-0",
+      "hidden",
+      "w-full",
+      "h-full",
+      "p-4",
+      "transition-transform",
+      "transform",
+      "bg-yellow-300",
+      "shadow-xl",
+      "resize-none",
+      "outline-rose-700",
+      "outline-offset-0",
+      "note-edit",
+      "note",
+      "hover:scale-105",
+    );
     noteEdit.value = note.text;
     return noteEdit;
   }
@@ -63,7 +81,20 @@ class StickyNotesApp {
   #createNoteRemoveButton(note) {
     const noteRemoveButton = document.createElement("button");
     noteRemoveButton.id = `note-delete-btn-${note.id}`;
-    noteRemoveButton.classList.add("absolute", "w-5", "h-5", "leading-5", "text-center", "transition-opacity", "opacity-0", "cursor-pointer", "delete-btn", "top-1", "right-1", "hover:opacity-100");
+    noteRemoveButton.classList.add(
+      "absolute",
+      "w-5",
+      "h-5",
+      "leading-5",
+      "text-center",
+      "transition-opacity",
+      "opacity-0",
+      "cursor-pointer",
+      "delete-btn",
+      "top-1",
+      "right-1",
+      "hover:opacity-100",
+    );
     noteRemoveButton.innerText = "🗑";
     return noteRemoveButton;
   }
@@ -72,8 +103,21 @@ class StickyNotesApp {
   #createNoteItem(note) {
     const noteItem = document.createElement("div");
     noteItem.id = `note-item-${note.id}`;
-    noteItem.classList.add("relative", "w-40", "h-40", "p-0", "m-2", "overflow-y-auto", "transition-transform", "transform", "bg-yellow-200", "shadow-lg", "note", "hover:scale-105");
-    noteItem.style.overflow = "hidden"; 
+    noteItem.classList.add(
+      "relative",
+      "w-40",
+      "h-40",
+      "p-0",
+      "m-2",
+      "overflow-y-auto",
+      "transition-transform",
+      "transform",
+      "bg-yellow-200",
+      "shadow-lg",
+      "note",
+      "hover:scale-105",
+    );
+    noteItem.style.overflow = "hidden";
     const noteRemoveButton = this.#createNoteRemoveButton(note);
     const noteText = this.#createNoteText(note);
     const noteEdit = this.#createNoteTextarea(note);
@@ -104,19 +148,19 @@ class StickyNotesApp {
       event.preventDefault();
       const noteText = event.target;
       const cursorPosition = noteText.selectionStart;
-      noteText.value = 
-        noteText.value.substring(0, cursorPosition) + 
-        "\n" + 
+      noteText.value =
+        noteText.value.substring(0, cursorPosition) +
+        "\n" +
         noteText.value.substring(cursorPosition);
       noteText.selectionStart = noteText.selectionEnd = cursorPosition + 1;
     }
-  }
+  };
 
   // Event handler to edit a note item
   #handleDoubleClickOnNoteElement = (event) => {
     const noteItem = event.target.closest(".note");
     if (noteItem) {
-      document.querySelectorAll(".note-edit").forEach(noteEdit => {
+      document.querySelectorAll(".note-edit").forEach((noteEdit) => {
         noteEdit.style.display = "none";
         noteEdit.previousElementSibling.style.display = "block";
       });
@@ -129,8 +173,8 @@ class StickyNotesApp {
       noteEdit.classList.add("scale-105");
       noteEdit.focus();
     }
-  }
-  
+  };
+
   // Event handler to save the note when clicking outside or pressing Enter/Escape
   #handleBlurToSaveNote = (event) => {
     if (event.target.classList.contains("note-edit")) {
@@ -142,28 +186,31 @@ class StickyNotesApp {
         this.#renderNotes();
       }
     }
-  }
+  };
 
   // Event handler to save the edited target note element
   #handleKeyDownToSaveNote = (event) => {
     if (event.target.classList.contains("note-edit")) {
       const noteId = this.#parseNoteId(event.target);
-      if ((event.key === "Enter" || event.key === "Escape") && !event.shiftKey) {
+      if (
+        (event.key === "Enter" || event.key === "Escape") &&
+        !event.shiftKey
+      ) {
         event.preventDefault();
         this.#handleBlurToSaveNote(event);
       } else if (event.key === "Enter" && event.shiftKey) {
         event.preventDefault();
         const noteText = event.target;
         const cursorPosition = noteText.selectionStart;
-        noteText.value = 
-          noteText.value.substring(0, cursorPosition) + 
-          "\n" + 
+        noteText.value =
+          noteText.value.substring(0, cursorPosition) +
+          "\n" +
           noteText.value.substring(cursorPosition);
         noteText.selectionStart = noteText.selectionEnd = cursorPosition + 1;
       }
     }
-  }
-  
+  };
+
   // Helper function to find the target todo element
   #findTargetNoteElement = (element) => element.closest(".note");
 
@@ -178,7 +225,7 @@ class StickyNotesApp {
       this.#notesWall.removeNote(noteIdNumber);
       this.#renderNotes();
     }
-  }
+  };
 }
 
 new StickyNotesApp();

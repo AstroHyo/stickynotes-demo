@@ -12,7 +12,7 @@ class NotesWall {
   }
 
   removeNote(id) {
-    for(let i = 0; i < this.#notes.length; i++) {
+    for (let i = 0; i < this.#notes.length; i++) {
       if (this.#notes[i].id === id) {
         this.#notes.splice(i, 1);
       }
@@ -20,7 +20,7 @@ class NotesWall {
   }
 
   editNote(id, newText) {
-    const note = this.#notes.find(note => note.id === id);
+    const note = this.#notes.find((note) => note.id === id);
     if (note) {
       note.text = newText;
     }
