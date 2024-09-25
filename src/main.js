@@ -173,7 +173,6 @@ class StickyNotesApp {
   // Event handler to remove the note
   #handleClickOnRemoveNoteButton = (event) => {
     if (event.target.id.startsWith("note-delete-btn-")) {
-      const noteElement = event.target.closest(".note");
       const noteId = this.#findTargetNoteElement(event.target);
       const noteIdNumber = this.#parseNoteId(noteId);
       this.#notesWall.removeNote(noteIdNumber);
